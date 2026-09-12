@@ -34,9 +34,10 @@ public Pizza build() {
     }
     return new Pizza(size, dough, sauce, toppings, hasExtraCheese);
 }
-
-2. Fluent API & Method Chaining
+```
+### 2. Fluent API & Method Chaining
 Justification: Builder setters return this (the builder instance), enabling natural method chaining. This avoids repetitive references to the builder variable and improves code readability.
+```java
 // BEFORE (Verbose step-by-step calls):
 ConcretePizzaBuilder builder = new ConcretePizzaBuilder();
 builder.setSize("Small");
@@ -51,10 +52,11 @@ Pizza customPizza = builder.reset()
         .setSauce("Barbecue")
         .setCheese(true)
         .build();
+```
 
-
-3. Dependency Inversion Principle (DIP) / Abstraction
+### 3. Dependency Inversion Principle (DIP) / Abstraction
 Justification: High-level modules like ChefDirector depend on the PizzaBuilder interface rather than concrete implementations (ConcretePizzaBuilder). This decouples recipe definitions from specific builder implementations.
+```java
 // BEFORE (Tightly coupled to concrete implementation):
 public void makeMargherita(ConcretePizzaBuilder builder) { ... }
 
@@ -67,8 +69,9 @@ public void makeMargherita(PizzaBuilder builder) {
            .setToppings(List.of("Mozzarella", "Basil"))
            .setCheese(true);
 }
+```
 
-4. Single Responsibility Principle (SRP)
+### 4. Single Responsibility Principle (SRP)
 Justification: Responsibilities are isolated across distinct classes:
 
 Pizza: Holds domain state and formatting (toString).
@@ -76,7 +79,7 @@ Pizza: Holds domain state and formatting (toString).
 ConcretePizzaBuilder: Accumulates parameters and enforces validation rules.
 
 ChefDirector: Coordinates reusable recipe construction steps
-
+```java
 // Isolated recipe configuration in ChefDirector:
 public class ChefDirector {
     public void makePepperoni(PizzaBuilder builder) {
@@ -88,8 +91,10 @@ public class ChefDirector {
                .setCheese(false);
     }
 }
-5. Intention-Revealing Names & Explicit Overrides
+```
+### 5. Intention-Revealing Names & Explicit Overrides
 Justification: Variable names, methods, and parameters clearly state their intent without needing inline comments (hasExtraCheese, makeMargherita, reset). Explicit @Override annotations ensure compiler enforcement of interface contracts.
+```java
 @Override
 public PizzaBuilder setCheese(boolean hasExtraCheese) {
     this.hasExtraCheese = hasExtraCheese;
